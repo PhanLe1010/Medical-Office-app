@@ -18,7 +18,11 @@ router.post('/contact_message', function(req, res, next){
         error: err
       });
     }else{
-      //sent an email to fontdesk
+      res.status(201).json({
+        title: "Saved message successfully",
+        obj: result
+      });
+      // sent an email to fontdesk
       var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -31,7 +35,7 @@ router.post('/contact_message', function(req, res, next){
         from: 'toantranoffice@gmail.com',
         to: 'toantranoffice@gmail.com',
         subject: result.subject + " - Appointment from the office's website" ,
-        html:  '<h1>A new Appointment form the website</h1>' + '<h1>this is another h1 </h1>'
+        html:  '<strong>Name: </strong>' + result.name + '<br> <strong>Email: </strong> '+result.email +'<br> <strong>Subject: </strong> ' + result.subject + '<br> <strong>Message: </strong> '+result.message
       }
 
       transporter.sendMail(mailOptions, function(error, info){
@@ -41,10 +45,33 @@ router.post('/contact_message', function(req, res, next){
           console.log('Email sent: ' + info.response);
         }
       });
-      res.status(201).json({
-        title: "Saved message successfully",
-        obj: result
-      });
+      // var transporter = nodemailer.createTransport('smtps://toantranoffice%40gmail.com:Icyowl776new@smtp.gmail.com');
+
+      // create template based sender function
+      // var sendContactMessage = transporter.templateSender({
+      //     subject: '{{subject}} - New Appointment from website',
+      //     text: 'name: {{name}}, email: {{ email }}, message: {{message}}',
+      //     html: '<strong>Name: </strong> {{name}} <br> <strong>Email: </strong> {{email}} <br> <strong>Subject: </strong> {{subject}} <br> <strong>Message: </strong> {{message}}'
+      // }, {
+      //     from: 'toantranoffice@gmail.com',
+      // });
+
+      // use template based sender to send a message
+      // sendContactMessage({
+      //     to: 'toantranoffice@gmail.com'
+      // }, {
+      //     subject: result.subject,
+      //     name: result.name,
+      //     email: result.email,
+      //     message: result.message
+      //
+      // }, function(err, info){
+      //     if(err){
+      //        console.log('Error');
+      //     }else{
+      //         console.log('contact message sent');
+      //     }
+      // });
     }
   })
 })
