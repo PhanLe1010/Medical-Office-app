@@ -31,7 +31,7 @@ router.post('/contact_message', function(req, res, next){
         from: 'toantranoffice@gmail.com',
         to: 'toantranoffice@gmail.com',
         subject: result.subject + " - Appointment from the office's website" ,
-        html:  '<h1>A new Appointment form the website</h1>'
+        html:  '<h1>A new Appointment form the website</h1>' + '<h1>this is another h1 </h1>'
       }
 
       transporter.sendMail(mailOptions, function(error, info){
